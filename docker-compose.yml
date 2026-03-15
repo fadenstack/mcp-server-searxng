@@ -1,0 +1,35 @@
+# SearXNG + MCP Server — unified single-container deployment
+#
+# Usage:
+#   docker compose up -d --build
+#
+# The container runs both SearXNG (port 8080) and the MCP server (port 8101).
+# By default only port 8101 is published — SearXNG stays internal.
+# To also expose the SearXNG UI, uncomment the 8080 port mapping.
+
+services:
+  mcp-searxng:
+    build:
+      context: .
+    image: llmport/mcp-searxng:latest
+    container_name: mcp-searxng
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - "${MCP_SEARXNG_PORT:-8101}:8101"
+      # Uncomment to expose SearXNG UI externally:
+      # - "8080:8080"
+    volumes:
+      # Persist SearXNG config (settings.yml, limiter DB, etc.)
+      - searxng-config:/etc/searxng
+      # Persist SearXNG cache
+      - searxng-cache:/var/cache/searxng
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8101/api/health')"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  searxng-config:
+  searxng-cache:

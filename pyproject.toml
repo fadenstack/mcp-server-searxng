@@ -1,0 +1,52 @@
+[project]
+name = "mcp-server-searxng"
+version = "0.1.0"
+description = "Standalone MCP server backed by a self-hosted SearXNG instance — integrates with LLM.port"
+readme = "README.md"
+license = "Apache-2.0"
+requires-python = ">=3.12"
+authors = [{ name = "LLM.port contributors" }]
+
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.34",
+    "ujson>=5.10",
+    "pydantic>=2.10",
+    "pydantic-settings>=2.7",
+    "mcp>=1.9",
+    "httpx>=0.28",
+    "click>=8.1",
+    "loguru>=0.7",
+]
+
+[project.scripts]
+mcp-searxng = "mcp_server.cli.main:cli"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.3",
+    "anyio[trio]>=4.8",
+    "pytest-anyio>=0.0.0",
+    "httpx>=0.28",
+    "ruff>=0.11",
+    "pytest-env>=1.1",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/mcp_server"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+filterwarnings = ["error", "ignore::DeprecationWarning"]
+env = ["MCP_SEARXNG_ENVIRONMENT=pytest"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 99
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]

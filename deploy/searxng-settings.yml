@@ -1,0 +1,34 @@
+# SearXNG settings for MCP server deployment.
+# This is a minimal configuration. Override by volume-mounting
+# your own settings.yml at /etc/searxng/settings.yml.
+
+use_default_settings: true
+
+general:
+  instance_name: "SearXNG (LLM.port MCP)"
+  debug: false
+
+search:
+  safe_search: 0
+  autocomplete: ""
+  default_lang: "auto"
+
+server:
+  # Secret key — CHANGE THIS in production
+  secret_key: "change-me-in-production"
+  bind_address: "0.0.0.0"
+  port: 8080
+  limiter: false
+
+ui:
+  static_use_hash: true
+
+# Enable JSON output format (required for MCP provider)
+search:
+  formats:
+    - html
+    - json
+
+# Redis/Valkey is optional — disable limiter if not available
+redis:
+  url: false
