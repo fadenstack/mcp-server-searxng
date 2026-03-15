@@ -8,16 +8,15 @@
 FROM searxng/searxng:latest
 
 # ── Install Python build tooling ─────────────────────────────────
-# SearXNG base already has Python 3.12+ and pip.
-# We add uv for fast dependency resolution and supervisord for process mgmt.
-COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
-
-RUN apk add --no-cache supervisor
+# SearXNG base has Python 3.14 but no pip on PATH.
+# Install uv via ensurepip, then use uv for everything else.
+RUN python3 -m ensurepip 2>/dev/null || true && \
+    python3 -m pip install --no-cache-dir uv supervisor
 
 # ── Install MCP server dependencies ─────────────────────────────
 WORKDIR /app/mcp
 
-COPY pyproject.toml ./
+COPY pyproject.toml README.md ./
 RUN uv pip install --system --no-cache -r pyproject.toml
 
 COPY src/ ./src/
@@ -36,5 +35,7 @@ COPY deploy/searxng-settings.yml /etc/searxng/settings.yml
 EXPOSE 8080 8101
 
 # ── Entrypoint ───────────────────────────────────────────────────
-# supervisord runs both processes and handles signal propagation
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
+# Override SearXNG's built-in ENTRYPOINT so we control the process tree.
+# supervisord runs both SearXNG and MCP server, handles signal propagation.
+ENTRYPOINT []
+CMD ["supervisord", "-c", "/etc/supervisord.conf"]

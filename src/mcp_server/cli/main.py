@@ -8,7 +8,7 @@ import sys
 
 import click
 
-from mcp_server.settings import settings
+from mcp_server.settings import settings, provider_settings_manager
 
 
 @click.group()
@@ -48,7 +48,8 @@ def doctor() -> None:
     click.echo("Checking configuration...\n")
 
     # SearXNG base URL
-    click.echo(f"  SearXNG URL: {settings.base_url}")
+    ps = provider_settings_manager.current
+    click.echo(f"  SearXNG URL: {ps.base_url}")
 
     # Auth token
     if settings.auth_enabled:
@@ -62,7 +63,7 @@ def doctor() -> None:
 
     try:
         resp = httpx.get(
-            f"{settings.base_url}/search",
+            f"{ps.base_url}/search",
             params={"q": "test", "format": "json", "categories": "general"},
             timeout=10,
         )
@@ -73,7 +74,7 @@ def doctor() -> None:
         else:
             errors.append(f"SearXNG returned HTTP {resp.status_code}.")
     except httpx.ConnectError:
-        errors.append(f"Cannot reach SearXNG at {settings.base_url} — check that it is running.")
+        errors.append(f"Cannot reach SearXNG at {ps.base_url} — check that it is running.")
     except httpx.TimeoutException:
         errors.append("SearXNG request timed out.")
 

@@ -12,7 +12,7 @@ from loguru import logger
 
 from mcp_server.mcp.server import mcp_server
 from mcp_server.mcp import transport as transport_mod
-from mcp_server.settings import settings
+from mcp_server.settings import settings, provider_settings_manager
 
 
 @asynccontextmanager
@@ -20,8 +20,9 @@ async def lifespan_setup(app: FastAPI) -> AsyncGenerator[None, None]:
     """Initialise shared resources on startup, tear down on shutdown."""
 
     # ── Startup ──────────────────────────────────────────────────
+    ps = provider_settings_manager.current
     app.state.http_client = httpx.AsyncClient(
-        timeout=httpx.Timeout(settings.request_timeout, connect=5.0),
+        timeout=httpx.Timeout(ps.request_timeout, connect=5.0),
     )
     logger.info(
         "MCP SearXNG server starting on {}:{}  (env={})",

@@ -31,11 +31,11 @@ This project runs **both SearXNG and the MCP server in a single container** usin
 
 ## Tools
 
-| Tool | Description |
-|------|-------------|
-| `web_search` | General web search across multiple engines |
-| `news_search` | News article search with date filtering |
-| `images_search` | Image search with source page links |
+| Tool            | Description                                |
+| --------------- | ------------------------------------------ |
+| `web_search`    | General web search across multiple engines |
+| `news_search`   | News article search with date filtering    |
+| `images_search` | Image search with source page links        |
 
 ## Quick Start
 
@@ -63,25 +63,25 @@ MCP_SEARXNG_BASE_URL=http://localhost:8080 uv run python -m mcp_server
 
 All settings use the `MCP_SEARXNG_` environment variable prefix:
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `MCP_SEARXNG_BASE_URL` | `http://127.0.0.1:8080` | SearXNG instance URL |
-| `MCP_SEARXNG_HOST` | `0.0.0.0` | MCP server bind host |
-| `MCP_SEARXNG_PORT` | `8101` | MCP server bind port |
-| `MCP_SEARXNG_AUTH_TOKEN` | *(empty)* | Bearer token for incoming MCP requests |
-| `MCP_SEARXNG_REQUEST_TIMEOUT` | `15` | HTTP timeout for SearXNG calls (seconds) |
-| `MCP_SEARXNG_LOG_LEVEL` | `info` | Log level |
+| Variable                      | Default                 | Description                              |
+| ----------------------------- | ----------------------- | ---------------------------------------- |
+| `MCP_SEARXNG_BASE_URL`        | `http://127.0.0.1:8080` | SearXNG instance URL                     |
+| `MCP_SEARXNG_HOST`            | `0.0.0.0`               | MCP server bind host                     |
+| `MCP_SEARXNG_PORT`            | `8101`                  | MCP server bind port                     |
+| `MCP_SEARXNG_AUTH_TOKEN`      | _(empty)_               | Bearer token for incoming MCP requests   |
+| `MCP_SEARXNG_REQUEST_TIMEOUT` | `15`                    | HTTP timeout for SearXNG calls (seconds) |
+| `MCP_SEARXNG_LOG_LEVEL`       | `info`                  | Log level                                |
 
 ## LLM.port Registration
 
 Register this server in the MCP Admin UI:
 
-| Field | Value |
-|-------|-------|
-| **Name** | `searxng` |
-| **Transport** | `Streamable HTTP` |
-| **URL** | `http://<host>:8101/mcp/` |
-| **Tool Prefix** | `searxng` |
+| Field           | Value                     |
+| --------------- | ------------------------- |
+| **Name**        | `searxng`                 |
+| **Transport**   | `Streamable HTTP`         |
+| **URL**         | `http://<host>:8101/mcp/` |
+| **Tool Prefix** | `searxng`                 |
 
 ### Registration curl
 
@@ -131,6 +131,7 @@ volumes:
 ```
 
 Key settings for MCP integration:
+
 - `search.formats` must include `json` (enabled by default)
 - `server.limiter` should be `false` unless you also run Redis/Valkey
 - `server.secret_key` should be changed in production

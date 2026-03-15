@@ -3,7 +3,7 @@
 from fastapi import APIRouter
 from fastapi.responses import UJSONResponse
 
-from mcp_server.settings import settings
+from mcp_server.settings import provider_settings_manager
 
 router = APIRouter(tags=["monitoring"])
 
@@ -18,9 +18,10 @@ async def readiness_check() -> UJSONResponse:
     """Check that the backing SearXNG instance is reachable."""
     import httpx
 
+    base_url = provider_settings_manager.current.base_url
     try:
         async with httpx.AsyncClient(timeout=5.0) as client:
-            resp = await client.get(f"{settings.base_url}/healthz")
+            resp = await client.get(f"{base_url}/healthz")
             if resp.status_code == 200:
                 return UJSONResponse({"status": "ok", "searxng": "reachable"})
             return UJSONResponse(

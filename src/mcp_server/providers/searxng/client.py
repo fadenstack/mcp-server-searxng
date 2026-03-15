@@ -5,22 +5,23 @@ from __future__ import annotations
 import httpx
 from loguru import logger
 
-from mcp_server.settings import settings
+from mcp_server.settings import provider_settings_manager
 
 
 class SearXNGClient:
     """Async wrapper around the SearXNG ``/search`` JSON API."""
 
-    def __init__(self) -> None:
-        self._base_url = settings.base_url.rstrip("/")
+    def _base_url(self) -> str:
+        return provider_settings_manager.current.base_url.rstrip("/")
 
     async def _search(self, params: dict[str, str | int]) -> dict:
         """Execute a search request against SearXNG and return the JSON payload."""
-        url = f"{self._base_url}/search"
+        url = f"{self._base_url()}/search"
         params["format"] = "json"
+        ps = provider_settings_manager.current
 
         async with httpx.AsyncClient(
-            timeout=httpx.Timeout(settings.request_timeout, connect=5.0),
+            timeout=httpx.Timeout(ps.request_timeout, connect=5.0),
         ) as client:
             resp = await client.get(url, params=params)
 
