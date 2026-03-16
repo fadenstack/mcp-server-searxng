@@ -1,5 +1,5 @@
 {
-  "base_url": "http://192.168.1.6:8080",
+  "base_url": "http://127.0.0.1:8080",
   "request_timeout": 15,
   "default_result_count": 10,
   "max_result_count": 50
