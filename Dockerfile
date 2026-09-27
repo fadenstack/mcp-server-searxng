@@ -2,7 +2,7 @@
 # Runs both SearXNG (port 8080 internal) and the MCP server (port 8101)
 # inside a single container using supervisord as process manager.
 #
-# Build:  docker build -t llmport/mcp-searxng:latest .
+# Build:  docker build -t faden/mcp-searxng:latest .
 # Run:    docker compose up -d
 
 FROM searxng/searxng:latest
