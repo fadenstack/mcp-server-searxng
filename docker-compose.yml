@@ -11,7 +11,7 @@ services:
   mcp-searxng:
     build:
       context: .
-    image: llmport/mcp-searxng:latest
+    image: faden/mcp-searxng:latest
     container_name: mcp-searxng
     restart: unless-stopped
     env_file: .env

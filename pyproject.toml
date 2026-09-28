@@ -1,11 +1,11 @@
 [project]
 name = "mcp-server-searxng"
 version = "0.1.0"
-description = "Standalone MCP server backed by a self-hosted SearXNG instance — integrates with LLM.port"
+description = "Standalone MCP server backed by a self-hosted SearXNG instance — integrates with Fadenstack"
 readme = "README.md"
 license = "Apache-2.0"
 requires-python = ">=3.12"
-authors = [{ name = "LLM.port contributors" }]
+authors = [{ name = "Fadenstack contributors" }]
 
 dependencies = [
     "fastapi>=0.115",

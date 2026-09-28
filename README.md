@@ -1,7 +1,7 @@
 # MCP Server — SearXNG
 
 Standalone MCP server backed by a self-hosted [SearXNG](https://docs.searxng.org/) instance.
-Integrates with LLM.port as a tool provider via the **Streamable HTTP** transport.
+Integrates with Fadenstack as a tool provider via the **Streamable HTTP** transport.
 
 ## Architecture
 
@@ -24,7 +24,7 @@ This project runs **both SearXNG and the MCP server in a single container** usin
                     Streamable HTTP /mcp/
                                │
                         ┌──────┴──────┐
-                        │  LLM.port   │
+                        │  Fadenstack   │
                         │  MCP Hub    │
                         └─────────────┘
 ```
@@ -72,7 +72,7 @@ All settings use the `MCP_SEARXNG_` environment variable prefix:
 | `MCP_SEARXNG_REQUEST_TIMEOUT` | `15`                    | HTTP timeout for SearXNG calls (seconds) |
 | `MCP_SEARXNG_LOG_LEVEL`       | `info`                  | Log level                                |
 
-## LLM.port Registration
+## Fadenstack Registration
 
 Register this server in the MCP Admin UI:
 
